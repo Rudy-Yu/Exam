@@ -7,6 +7,7 @@ require (
 	github.com/gofiber/fiber/v2 v2.52.8
 	gorm.io/driver/postgres v1.6.0
 	gorm.io/gorm v1.30.0
+	github.com/golang-jwt/jwt/v4 v4.5.0
 )
 
 require (

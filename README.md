@@ -4,6 +4,44 @@ Aplikasi Ujian Online berbasis web dengan backend Go (Fiber, GORM, PostgreSQL) d
 
 ---
 
+## Status Fitur MVP (Update)
+
+### Backend
+- [x] Autentikasi user & admin (JWT, role)
+- [x] CRUD soal (admin only)
+- [x] Simpan jawaban peserta (auto-save & submit final)
+- [x] Export hasil ujian (CSV, admin only)
+- [x] Penilaian otomatis sederhana (benar/salah)
+- [x] Struktur modular, mudah dikembangkan
+
+### Frontend
+- [x] Login & register user
+- [x] Dashboard peserta (daftar ujian)
+- [x] Halaman ujian (soal, input jawaban, timer)
+- [x] Auto-save jawaban peserta
+- [x] Submit jawaban & tampilkan skor
+- [x] Logout
+- [x] Panel admin CRUD soal (tambah, edit, hapus, export)
+- [x] Notifikasi success/error pada aksi CRUD & submit
+- [x] Validasi input form
+- [x] Proteksi route (hanya admin bisa akses /admin)
+
+### Fitur Lanjutan (Belum Ada)
+- [ ] Manajemen user (CRUD user oleh admin)
+- [ ] Laporan detail hasil ujian per peserta (frontend)
+- [ ] Penilaian otomatis lanjutan (bobot soal, analisis jawaban)
+- [ ] Fitur keamanan lanjutan (reset password, verifikasi email, dsb)
+- [ ] Notifikasi/email
+- [ ] UI/UX panel admin lebih lengkap (filter, search, pagination)
+
+---
+
+## Catatan
+- Semua fitur inti MVP SUDAH SELESAI dan siap diuji/digunakan.
+- Fitur lanjutan dapat dikembangkan sesuai kebutuhan selanjutnya.
+
+---
+
 ## Fitur Utama
 - **Registrasi & Login User** (dengan validasi ke database, password di-hash)
 - **Dashboard Peserta**: Menampilkan daftar ujian yang tersedia
@@ -78,13 +116,6 @@ online-exam-app/
 - [x] Submit jawaban & skor otomatis
 - [x] Logout
 - [x] Halaman registrasi & lupa password (dummy, bisa dikembangkan)
-
----
-
-## Catatan
-- Folder `node_modules` dan file build **tidak** disimpan di repository (lihat `.gitignore`).
-- Semua konfigurasi database dapat diubah di `backend/main.go`.
-- Untuk pengembangan lebih lanjut, tambahkan fitur admin, soal dinamis, penilaian otomatis, dsb.
 
 ---
 
