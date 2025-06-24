@@ -14,8 +14,15 @@ const Login = ({ onLogin }) => {
         try {
             const res = await axios.post('http://localhost:3000/api/login', { email, password });
             if (res.data && res.data.success) {
-                onLogin({ email });
-                navigate('/dashboard');
+                localStorage.setItem('token', res.data.token);
+                localStorage.setItem('role', res.data.user.role);
+                localStorage.setItem('email', res.data.user.email);
+                onLogin({ email: res.data.user.email, role: res.data.user.role, token: res.data.token });
+                if (res.data.user.role === 'admin') {
+                    navigate('/admin');
+                } else {
+                    navigate('/dashboard');
+                }
             } else {
                 setError(res.data.message || 'Login gagal');
             }

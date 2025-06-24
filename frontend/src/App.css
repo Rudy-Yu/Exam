@@ -1,6 +1,138 @@
 .App {
-  font-family: Arial, Helvetica, sans-serif;
-  padding: 2rem;
-  background: #f8f9fa;
+  font-family: 'Poppins', Arial, Helvetica, sans-serif;
+  padding: 0;
+  margin: 0;
   min-height: 100vh;
+  background: linear-gradient(135deg, #f8ffae 0%, #43c6ac 100%);
+  color: #222;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  background: none;
+}
+
+.login-container, .register-container, .dashboard-container, .exam-container, .exam-page {
+  max-width: 400px;
+  margin: 40px auto;
+  background: rgba(255,255,255,0.95);
+  border-radius: 18px;
+  box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.18);
+  padding: 2.5rem 2rem 2rem 2rem;
+  text-align: center;
+  animation: fadeIn 1s;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(30px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+h1, h2 {
+  font-family: 'Poppins', Arial, Helvetica, sans-serif;
+  font-weight: 700;
+  margin-bottom: 1.2rem;
+  color: #2b6777;
+}
+
+input[type="email"], input[type="password"], input[type="text"], input[type="number"] {
+  width: 90%;
+  padding: 0.8rem 1rem;
+  margin: 0.7rem 0;
+  border: 1px solid #b2bec3;
+  border-radius: 8px;
+  font-size: 1rem;
+  background: #f1f2f6;
+  transition: border 0.2s;
+}
+input:focus {
+  border: 1.5px solid #43c6ac;
+  outline: none;
+}
+
+button {
+  background: linear-gradient(90deg, #43c6ac 0%, #191654 100%);
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  padding: 0.8rem 2.2rem;
+  font-size: 1.1rem;
+  font-weight: 600;
+  margin-top: 1rem;
+  cursor: pointer;
+  box-shadow: 0 2px 8px rgba(67,198,172,0.12);
+  transition: background 0.2s, transform 0.1s;
+}
+button:hover {
+  background: linear-gradient(90deg, #191654 0%, #43c6ac 100%);
+  transform: translateY(-2px) scale(1.04);
+}
+
+a {
+  color: #43c6ac;
+  text-decoration: none;
+  font-weight: 500;
+  transition: color 0.2s;
+}
+a:hover {
+  color: #191654;
+}
+
+.exam-card {
+  background: #f1f2f6;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(67,198,172,0.08);
+  padding: 1.2rem 1rem;
+  margin: 1.2rem 0;
+  text-align: left;
+  transition: box-shadow 0.2s, transform 0.1s;
+}
+.exam-card:hover {
+  box-shadow: 0 6px 18px rgba(67,198,172,0.18);
+  transform: translateY(-2px) scale(1.02);
+}
+
+.question {
+  background: #e3fdfd;
+  border-radius: 10px;
+  padding: 1rem;
+  margin-bottom: 1.2rem;
+  box-shadow: 0 1px 4px rgba(67,198,172,0.08);
+}
+
+input[type="radio"] {
+  accent-color: #43c6ac;
+  margin-right: 8px;
+}
+
+/* Notif style */
+.success {
+  color: #388e3c;
+  background: #e8f5e9;
+  border-radius: 6px;
+  padding: 0.7rem 1rem;
+  margin-bottom: 1rem;
+  font-weight: 500;
+}
+.error {
+  color: #c62828;
+  background: #ffebee;
+  border-radius: 6px;
+  padding: 0.7rem 1rem;
+  margin-bottom: 1rem;
+  font-weight: 500;
+}
+
+@media (max-width: 600px) {
+  .login-container, .register-container, .dashboard-container, .exam-container, .exam-page {
+    max-width: 98vw;
+    padding: 1.2rem 0.5rem;
+  }
+  .exam-card {
+    padding: 0.7rem 0.5rem;
+  }
+  h1, h2 {
+    font-size: 1.2rem;
+  }
 } 

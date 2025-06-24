@@ -22,6 +22,9 @@ const Dashboard = ({ user, onLogout }) => {
                 <h2>Selamat datang, {user.email}!</h2>
                 <button onClick={onLogout} style={{ height: 'fit-content' }}>Logout</button>
             </div>
+            {user.role === 'admin' && (
+                <button style={{margin:'16px 0'}} onClick={() => navigate('/admin')}>Panel Admin</button>
+            )}
             <h1>DASHBOARD PESERTA</h1>
             {exams.map((exam) => (
                 <div key={exam.id} className="exam-card">

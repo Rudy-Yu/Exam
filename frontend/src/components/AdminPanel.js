@@ -3,11 +3,11 @@ import UserManagement from './UserManagement';
 
 const API_URL = 'http://localhost:3000/api/admin/questions';
 
-function AdminPanel() {
+function AdminPanel({ onLogout }) {
   const [questions, setQuestions] = useState([]);
   const [token, setToken] = useState('');
   const [loading, setLoading] = useState(true);
-  const [form, setForm] = useState({ id: '', exam_id: '', question_text: '', correct_answer: '' });
+  const [form, setForm] = useState({ id: '', exam_id: '', question_text: '', correct_answer: '', type: 'pilihan_ganda', options: ['', '', '', ''] });
   const [isEdit, setIsEdit] = useState(false);
   const [notif, setNotif] = useState('');
   const [notifType, setNotifType] = useState('');
@@ -54,29 +54,47 @@ function AdminPanel() {
   };
 
   const handleChange = e => {
-    setForm({ ...form, [e.target.name]: e.target.value });
+    const { name, value } = e.target;
+    if (name.startsWith('option_')) {
+      const idx = parseInt(name.split('_')[1], 10);
+      const newOptions = [...form.options];
+      newOptions[idx] = value;
+      setForm({ ...form, options: newOptions });
+    } else {
+      setForm({ ...form, [name]: value });
+    }
   };
 
   const handleSubmit = async e => {
     e.preventDefault();
-    if (!form.exam_id || !form.question_text || !form.correct_answer) {
+    if (!form.exam_id || !form.question_text || !form.correct_answer || !form.type) {
       setNotif('Semua field wajib diisi!');
       setNotifType('error');
       return;
     }
+    if (form.type === 'pilihan_ganda' && form.options.filter(opt => opt.trim()).length < 2) {
+      setNotif('Minimal 2 opsi untuk pilihan ganda!');
+      setNotifType('error');
+      return;
+    }
+    const payload = {
+      ...form,
+      exam_id: parseInt(form.exam_id, 10),
+      options: form.type === 'pilihan_ganda' ? form.options.filter(opt => opt.trim()) : undefined
+    };
     try {
       let res;
       if (isEdit) {
         res = await fetch(`${API_URL}/${form.id}`, {
           method: 'PUT',
           headers: { 'Content-Type': 'application/json', Authorization: 'Bearer ' + token },
-          body: JSON.stringify(form)
+          body: JSON.stringify(payload)
         });
       } else {
         res = await fetch(API_URL, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json', Authorization: 'Bearer ' + token },
-          body: JSON.stringify(form)
+          body: JSON.stringify(payload)
         });
       }
       if (res.ok) {
@@ -90,18 +108,21 @@ function AdminPanel() {
       setNotif('Terjadi error jaringan!');
       setNotifType('error');
     }
-    setForm({ id: '', exam_id: '', question_text: '', correct_answer: '' });
+    setForm({ id: '', exam_id: '', question_text: '', correct_answer: '', type: 'pilihan_ganda', options: ['', '', '', ''] });
     setIsEdit(false);
     fetchQuestions(token);
   };
 
   const handleEdit = q => {
-    setForm(q);
+    setForm({
+      ...q,
+      options: Array.isArray(q.options) && q.options.length ? q.options : ['', '', '', '']
+    });
     setIsEdit(true);
   };
 
   const handleCancel = () => {
-    setForm({ id: '', exam_id: '', question_text: '', correct_answer: '' });
+    setForm({ id: '', exam_id: '', question_text: '', correct_answer: '', type: 'pilihan_ganda', options: ['', '', '', ''] });
     setIsEdit(false);
   };
 
@@ -113,7 +134,10 @@ function AdminPanel() {
 
   return (
     <div>
-      <h2>Panel Admin</h2>
+      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+        <h2>Panel Admin</h2>
+        {onLogout && <button onClick={onLogout}>Logout</button>}
+      </div>
       
       {/* Tab Navigation */}
       <div style={{ marginBottom: 20 }}>
@@ -152,7 +176,24 @@ function AdminPanel() {
           <form onSubmit={handleSubmit} style={{ marginBottom: 20 }}>
             <input name="exam_id" placeholder="Exam ID" value={form.exam_id} onChange={handleChange} required />{' '}
             <input name="question_text" placeholder="Pertanyaan" value={form.question_text} onChange={handleChange} required />{' '}
-            <input name="correct_answer" placeholder="Jawaban Benar" value={form.correct_answer} onChange={handleChange} required />{' '}
+            <select name="type" value={form.type} onChange={handleChange} required style={{marginRight: 10}}>
+              <option value="pilihan_ganda">Pilihan Ganda</option>
+              <option value="isian">Isian Singkat</option>
+            </select>
+            {form.type === 'pilihan_ganda' && (
+              <div style={{margin:'10px 0'}}>
+                {(Array.isArray(form.options) ? form.options : ['', '', '', '']).map((opt, idx) => (
+                  <input key={idx} name={`option_${idx}`} placeholder={`Opsi ${String.fromCharCode(65+idx)}`} value={opt} onChange={handleChange} style={{marginRight:5}} />
+                ))}
+                <select name="correct_answer" value={form.correct_answer} onChange={handleChange} required>
+                  <option value="">Pilih Jawaban Benar</option>
+                  {(Array.isArray(form.options) ? form.options : ['', '', '', '']).map((opt, idx) => opt.trim() && <option key={idx} value={opt}>{String.fromCharCode(65+idx)}. {opt}</option>)}
+                </select>
+              </div>
+            )}
+            {form.type === 'isian' && (
+              <input name="correct_answer" placeholder="Jawaban Benar" value={form.correct_answer} onChange={handleChange} required style={{marginRight:5}} />
+            )}
             <button type="submit">{isEdit ? 'Update' : 'Tambah'}</button>
             {isEdit && <button type="button" onClick={handleCancel}>Batal</button>}
           </form>

@@ -12,11 +12,12 @@ function App() {
     const [user, setUser] = useState(null);
 
     useEffect(() => {
-        // Cek token dan role dari localStorage saat mount
+        // Cek token, role, dan email dari localStorage saat mount
         const token = localStorage.getItem('token');
         const role = localStorage.getItem('role');
-        if (token && role) {
-            setUser({ token, role });
+        const email = localStorage.getItem('email');
+        if (token && role && email) {
+            setUser({ token, role, email });
         }
     }, []);
 
